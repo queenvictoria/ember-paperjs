@@ -22,17 +22,28 @@ export default Component.extend({
     this.set("paper", paper);
     this.set("tool", tool);
 
-    tool.onMouseDown = () => {
+    // @TODO Detect a drawing or dragging event.
+    tool.onMouseDown = (event) => {
       path = new paper.Path();
       path.strokeColor = '#cccccc';
+
+      // Callback or fire action
+      this.sendAction('onMouseDown', event);
     }
 
+    // @TODO Detect a drawing or dragging event.
     tool.onMouseDrag = (event) => {
       if ( ! path ) return;
       path.add(event.point);
+
+      // Callback or fire action
+      this.sendAction('onMouseDrag', event);
     }
 
-    tool.onMouseUp = () => {
+    tool.onMouseUp = (event) => {
+      // Callback or fire action
+      this.sendAction('onMouseUp', event);
+
       if ( ! path ) return;
 
       const final = path.clone();
@@ -67,6 +78,9 @@ export default Component.extend({
       }
 
       path.remove();
+
+      // Callback or fire action
+      this.sendAction('onClosed', final);
     }
   },
 
