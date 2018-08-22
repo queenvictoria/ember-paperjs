@@ -1,12 +1,12 @@
+/*eslint no-console: ["error", { allow: ["info", "warn", "error"] }] */
 import Controller from '@ember/controller';
 
 export default Controller.extend({
 
   // @FIX Load an SVG file as a demo.
-
   actions: {
     onMouseEvent: function(event) {
-      console.log(event.type);
+      console.info(event.type);
     },
 
     // Triggered on the onClosed action.
@@ -20,7 +20,7 @@ export default Controller.extend({
         embedImages: false, // default true
       };
 
-      console.log(path.exportSVG())
+      console.info(path.exportSVG(opts));
     }
   }
 });

@@ -1,4 +1,5 @@
 import Component from '@ember/component';
+import $ from 'jquery';
 import layout from '../templates/components/paperjs-drawing';
 
 
@@ -15,8 +16,8 @@ export default Component.extend({
     let path = null;
 
     const tool = new paper.Tool();
-    tool.minDistance = 10;
-    tool.maxDistance = 100;
+    tool.minDistance = this.get("minDistance") || 10;
+    tool.maxDistance = this.get("maxDistance") || 100;
 
     this.set("canvas", canvas);
     this.set("paper", paper);

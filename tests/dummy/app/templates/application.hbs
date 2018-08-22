@@ -1,14 +1,47 @@
-<h2 id="title">Paper JS for Ember</h2>
+<style>
+  .container {
+    position: relative;
+    border: 1px solid gray;
+    margin: 2em;
+    width: auto;
+  }
+  .aligned {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 594px;
+    height: 568px;
+  }
+  .over {
+    z-index: 1;
+  }
+  .under {
+    z-index: 0;
+  }
+</style>
 
+<h2 id="title">Paper JS for Ember</h2>
+https://balinterdi.com/blog/easy-demo-site-set-up-for-your-ember-js-addon/
 {{outlet}}
 
-{{paperjs-drawing
-  closed=true
-  smoothed=true
-  strokeColour="red"
-  fillColour="rgba(128, 0, 0, 0.2)"
-  onMouseDown=(action "onMouseEvent")
-  onMouseDrag=(action "onMouseEvent")
-  onMouseUp=(action "onMouseEvent")
-  onClosed=(action "closedCallback")
-}}
+This product is unaffiliated with the Ember project. Ember is a trademark of Tilde Inc.
+
+<div class="container">
+  {{paperjs-drawing
+    class="aligned over"
+    closed=true
+    smoothed=true
+    simplified=true
+    compoundPaths=true
+    strokeColour="red"
+    fillColour="rgba(128, 0, 0, 0.2)"
+    minDistance=1
+    maxDistance=100
+    loadSVG=""
+    onMouseDown=(action "onMouseEvent")
+    onMouseDrag=(action "onMouseEvent")
+    onMouseUp=(action "onMouseEvent")
+    onClosed=(action "closedCallback")
+  }}
+  <img class="under aligned" src="https://www.emberjs.com/images/brand/ember_Tomster-Lockup-3a0f7b78.png">
+</div>
