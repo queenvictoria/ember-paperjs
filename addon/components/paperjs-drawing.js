@@ -29,7 +29,7 @@ export default Component.extend({
       path.strokeColor = '#cccccc';
 
       // Callback or fire action
-      this.sendAction('onMouseDown', event);
+      this.sendAction('onMouseDown', event, path, this.get("paper"));
     }
 
     // @TODO Detect a drawing or dragging event.
@@ -38,7 +38,7 @@ export default Component.extend({
       path.add(event.point);
 
       // Callback or fire action
-      this.sendAction('onMouseDrag', event);
+      this.sendAction('onMouseDrag', event, path, this.get("paper"));
     }
 
     tool.onMouseUp = (event) => {
@@ -81,7 +81,7 @@ export default Component.extend({
       path.remove();
 
       // Callback or fire action
-      this.sendAction('onClosed', final);
+      this.sendAction('onClosed', final, this.get("paper"));
     }
   },
 
