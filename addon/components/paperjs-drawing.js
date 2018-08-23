@@ -13,6 +13,11 @@ export default Component.extend({
     const canvas = this.get("element");
 
     paper.setup(canvas);
+    paper.project.currentStyle = {
+      fillColor: this.get("fillColor") || "white",
+      strokeColor: this.get("strokeColor") || "black",
+    };
+
     let path = null;
 
     const tool = new paper.Tool();
@@ -48,10 +53,7 @@ export default Component.extend({
       if ( ! path ) return;
 
       let final = path.clone();
-      if ( this.get("strokeColour") ) {
-        final.strokeColor = this.get("strokeColour");
-      }
-      else if ( this.get("strokeColor") ) {
+      if ( this.get("strokeColor") ) {
         final.strokeColor = this.get("strokeColor");
       }
       else {
@@ -60,10 +62,7 @@ export default Component.extend({
 
       if ( this.get("closed") ) {
         final.closed = true;
-        if ( this.get("fillColour") ) {
-          final.fillColor = this.get("fillColour");
-        }
-        else if ( this.get("fillColor") ) {
+        if ( this.get("fillColor") ) {
           final.fillColor = this.get("fillColor");
         }
         else {
