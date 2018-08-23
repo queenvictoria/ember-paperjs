@@ -83,23 +83,14 @@ export default Component.extend({
 
       // Compound paths.
       if ( this.compoundPaths ) {
-        let compoundPath = this.get("compoundPath")
-        if ( ! compoundPath ) {
-          compoundPath = new paper.CompoundPath({
-            fillColor: this.get("fillColour") || 'rgba(128, 128, 128, 0.1)',
-            strokeColor: this.get("strokeColour") || 'rgba(128, 128, 128, 0.5)',
-          });
-        }
-
         // Paper compound paths are not illustrator compound paths.
-        // @TODO Iterate each existing path.
+        // Iterate existing paths.
         const project = paper.project;
         if ( project ) {
-          console.log(`Final is ${final.length} long.`)
           // Test every min length
           const steps = Math.floor(final.length / this.get("minDistance"));
-          console.log(`Final has ${steps} steps.`)
           let solved = false;
+
           project.getItems({class: paper.Path}).forEach((item, index) => {
             if ( solved || item == final ) return;
 
@@ -108,16 +99,14 @@ export default Component.extend({
             let within = true;
             for ( var i = 0; i < steps; i++ ) {
               let point = final.getPointAt(i * this.get("minDistance"));
+              // It only takes one...
               if ( ! item.contains(point) ) {
-                console.log(`Item ${index} does not contain point ${i}.`);
                 within = false;
                 break;
               }
-              console.log(i)
             }
             // If they're all within this path then we are inside this path.
             if ( within ) {
-              console.log(`Our final path is within path ${index}.`);
               // If it is do a boolean subtract.
               let result = item.subtract(final, {});
               item.remove();
@@ -126,13 +115,8 @@ export default Component.extend({
               // Don't test any further.
               solved = true;
             }
-            // @FIX How to do three concentric paths? Just works.
           })
-        }
-
-
-        compoundPath.addChild(final);
-        this.set("compoundPath", compoundPath);
+        };
       }
 
       // Callback or fire action
