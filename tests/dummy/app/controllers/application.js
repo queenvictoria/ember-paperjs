@@ -2,15 +2,63 @@
 import Controller from '@ember/controller';
 
 export default Controller.extend({
+  paperScope: null,
+  data: "<initialising/>",
+
+  // The data in our textarea should update when paper has shapes added to it.
 
   // @FIX Load an SVG file as a demo.
   actions: {
-    onMouseEvent: function(event) {
+    import: function() {
+      console.log('Import button pressed.');
+
+      // Get the paper object.
+      if ( ! this.paperScope || ! this.data ) {
+        console.error("No reference to the Paper scope.");
+        return;
+      }
+      const project = this.get("paperScope").project;
+
+      // Get the svg string.
+      const data = this.get("data");
+
+      // Call import.
+      project.importSVG(data, {expandShapes: true});
+    },
+
+    export: function() {
+      console.log('Export button pressed.');
+
+      // Get the paper object.
+      if ( ! this.paperScope ) {
+        console.error("No reference to the Paper scope.");
+        return;
+      }
+      const project = this.get("paperScope").project;
+
+      // Call export.
+      const data = project.exportSVG({asString: true});
+
+      // Put the result into the textarea.
+      this.set("data", data);
+    },
+
+    clear: function() {
+      if ( this.paperScope ) {
+        console.log("Clear")
+        this.get("paperScope").project.clear();
+      }
+    },
+
+    onMouseEvent: function(event, path, paper) {
+      // @FIX Move to initialised event
+      if ( ! this.paperScope ) this.set("paperScope", paper);
+
       console.info(event.type);
     },
 
     // Triggered on the onClosed action.
-    closedCallback: function(path) {
+    closedCallback: function(path, paper) {
       const opts = {
         bounds: 'view',
         matrix: 'view',
