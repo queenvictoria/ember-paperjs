@@ -33,8 +33,8 @@ export default Controller.extend({
 
     clear: function() {
       if ( this.paperScope ) {
-        console.log("Clear")
         this.get("paperScope").project.clear();
+        this._updateData();
       }
     },
 
