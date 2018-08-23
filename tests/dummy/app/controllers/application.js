@@ -28,19 +28,7 @@ export default Controller.extend({
 
     export: function() {
       console.log('Export button pressed.');
-
-      // Get the paper object.
-      if ( ! this.paperScope ) {
-        console.error("No reference to the Paper scope.");
-        return;
-      }
-      const project = this.get("paperScope").project;
-
-      // Call export.
-      const data = project.exportSVG({asString: true});
-
-      // Put the result into the textarea.
-      this.set("data", data);
+      this._updateData();
     },
 
     clear: function() {
@@ -69,6 +57,24 @@ export default Controller.extend({
       };
 
       console.info(path.exportSVG(opts));
+      this._updateData();
+    },
+  },
+
+  _updateData() {
+    // Get the paper object.
+    if ( ! this.paperScope ) {
+      console.error("No reference to the Paper scope.");
+      return;
     }
-  }
+    const project = this.get("paperScope").project;
+
+    // Call export.
+    const data = project.exportSVG({asString: true, embedImages: false,});
+
+    // Put the result into the textarea.
+    this.set("data", data);
+  },
+
+
 });
