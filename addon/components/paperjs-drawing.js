@@ -47,7 +47,7 @@ export default Component.extend({
 
       if ( ! path ) return;
 
-      const final = path.clone();
+      let final = path.clone();
       if ( this.get("strokeColour") ) {
         final.strokeColor = this.get("strokeColour");
       }
@@ -75,10 +75,65 @@ export default Component.extend({
         final.smooth();
       }
       if ( this.get("simplified") ) {
+        final.reduce();
         final.simplify();
       }
 
       path.remove();
+
+      // Compound paths.
+      if ( this.compoundPaths ) {
+        let compoundPath = this.get("compoundPath")
+        if ( ! compoundPath ) {
+          compoundPath = new paper.CompoundPath({
+            fillColor: this.get("fillColour") || 'rgba(128, 128, 128, 0.1)',
+            strokeColor: this.get("strokeColour") || 'rgba(128, 128, 128, 0.5)',
+          });
+        }
+
+        // Paper compound paths are not illustrator compound paths.
+        // @TODO Iterate each existing path.
+        const project = paper.project;
+        if ( project ) {
+          console.log(`Final is ${final.length} long.`)
+          // Test every min length
+          const steps = Math.floor(final.length / this.get("minDistance"));
+          console.log(`Final has ${steps} steps.`)
+          let solved = false;
+          project.getItems({class: paper.Path}).forEach((item, index) => {
+            if ( solved || item == final ) return;
+
+            // Determine if this new path is entirely within a path.
+            // Iterate final points
+            let within = true;
+            for ( var i = 0; i < steps; i++ ) {
+              let point = final.getPointAt(i * this.get("minDistance"));
+              if ( ! item.contains(point) ) {
+                console.log(`Item ${index} does not contain point ${i}.`);
+                within = false;
+                break;
+              }
+              console.log(i)
+            }
+            // If they're all within this path then we are inside this path.
+            if ( within ) {
+              console.log(`Our final path is within path ${index}.`);
+              // If it is do a boolean subtract.
+              let result = item.subtract(final, {});
+              item.remove();
+              final.remove();
+              final = result;
+              // Don't test any further.
+              solved = true;
+            }
+            // @FIX How to do three concentric paths? Just works.
+          })
+        }
+
+
+        compoundPath.addChild(final);
+        this.set("compoundPath", compoundPath);
+      }
 
       // Callback or fire action
       this.sendAction('onClosed', final, this.get("paper"));
