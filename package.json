@@ -11,7 +11,10 @@
   ],
   "repository": "",
   "license": "MIT",
-  "author": "",
+  "author": {
+    "name": "Snow",
+    "email": "snow@hollysydney.com"
+  },
   "directories": {
     "doc": "doc",
     "test": "tests"
