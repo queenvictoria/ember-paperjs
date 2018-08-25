@@ -69,8 +69,17 @@ export default Controller.extend({
     }
     const project = this.get("paperScope").project;
 
+    // @FIX this should be a copy
+    const exportable = project;
+    // Alter the colours of all the paths first.
+    exportable.getItems({class: paper.Path}).forEach(item => {
+      item.fillColor = "rgba(255,255,255,0.5)";
+      item.strokeColor = "rgba(0,0,0,0.5)";
+    })
     // Call export.
-    const data = project.exportSVG({asString: true, embedImages: false,});
+    const data = exportable.exportSVG({asString: true, embedImages: false,});
+    // @FIX Remove copies.
+    // exportable.remove();
 
     // Put the result into the textarea.
     this.set("data", data);
