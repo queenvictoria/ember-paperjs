@@ -8,7 +8,7 @@ export default Controller.extend({
   // The data in our textarea should update when paper has shapes added to it.
   // @FIX Load an SVG file as a demo.
   actions: {
-    import: function() {
+    import() {
       console.log('Import button pressed.');
 
       // Get the paper object.
@@ -25,28 +25,28 @@ export default Controller.extend({
       project.importSVG(data, {expandShapes: true});
     },
 
-    export: function() {
+    export() {
       console.log('Export button pressed.');
       this._updateData();
     },
 
-    clear: function() {
+    clear() {
       if ( this.paperScope ) {
         this.get("paperScope").project.clear();
         this._updateData();
       }
     },
 
-    onInitEvent: function(paperScope) {
+    onInitEvent(paperScope) {
       this.set("paperScope", paperScope);
     },
 
-    onMouseEvent: function(event, path, paper) {
+    onMouseEvent(event, path, paper) {
       console.info(event.type);
     },
 
     // Triggered on the onClosed action.
-    closedCallback: function(path, paper) {
+    closedCallback(path, paper) {
       const opts = {
         bounds: 'view',
         matrix: 'view',

@@ -1,5 +1,4 @@
 import Component from '@ember/component';
-import $ from 'jquery';
 import layout from '../templates/components/paperjs-drawing';
 
 
@@ -116,7 +115,7 @@ export default Component.extend({
               solved = true;
             }
           })
-        };
+        }
       }
 
       // Callback or fire action
