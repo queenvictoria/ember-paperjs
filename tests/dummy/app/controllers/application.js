@@ -6,9 +6,6 @@ export default Controller.extend({
   data: "<initialising/>",
 
   // The data in our textarea should update when paper has shapes added to it.
-  init: function() {
-    if ( ! this.paperScope ) this.set("paperScope", paper);
-  },
   // @FIX Load an SVG file as a demo.
   actions: {
     import: function() {
@@ -38,6 +35,10 @@ export default Controller.extend({
         this.get("paperScope").project.clear();
         this._updateData();
       }
+    },
+
+    onInitEvent: function(paperScope) {
+      this.set("paperScope", paperScope);
     },
 
     onMouseEvent: function(event, path, paper) {

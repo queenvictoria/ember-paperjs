@@ -7,34 +7,36 @@ export default Component.extend({
   layout,
   tagName: "canvas",
 
-  didRender() {
+  didInsertElement() {
     this._super(...arguments);
 
     const canvas = this.get("element");
+    const scope = new paper.PaperScope();
 
-    paper.setup(canvas);
-    paper.project.currentStyle = {
+    scope.setup(canvas);
+    scope.activate();
+    scope.project.currentStyle = {
       fillColor: this.get("fillColor") || "white",
       strokeColor: this.get("strokeColor") || "black",
     };
 
     let path = null;
 
-    const tool = new paper.Tool();
+    const tool = new scope.Tool();
     tool.minDistance = this.get("minDistance") || 10;
     tool.maxDistance = this.get("maxDistance") || 100;
 
-    this.set("canvas", canvas);
-    this.set("paper", paper);
-    this.set("tool", tool);
+    this.sendAction("onInit", scope);
 
     // @TODO Detect a drawing or dragging event.
     tool.onMouseDown = (event) => {
-      path = new paper.Path();
+      scope.activate();
+
+      path = new scope.Path();
       path.strokeColor = '#cccccc';
 
       // Callback or fire action
-      this.sendAction('onMouseDown', event, path, this.get("paper"));
+      this.sendAction('onMouseDown', event, path, scope);
     }
 
     // @TODO Detect a drawing or dragging event.
@@ -43,7 +45,7 @@ export default Component.extend({
       path.add(event.point);
 
       // Callback or fire action
-      this.sendAction('onMouseDrag', event, path, this.get("paper"));
+      this.sendAction('onMouseDrag', event, path, scope);
     }
 
     tool.onMouseUp = (event) => {
@@ -84,13 +86,12 @@ export default Component.extend({
       if ( this.compoundPaths ) {
         // Paper compound paths are not illustrator compound paths.
         // Iterate existing paths.
-        const project = paper.project;
-        if ( project ) {
+        if ( scope.project ) {
           // Test every min length
           const steps = Math.floor(final.length / this.get("minDistance"));
           let solved = false;
 
-          project.getItems({class: paper.Path}).forEach((item, index) => {
+          scope.project.getItems({class: paper.Path}).forEach((item) => {
             if ( solved || item == final ) return;
 
             // Determine if this new path is entirely within a path.
@@ -119,7 +120,7 @@ export default Component.extend({
       }
 
       // Callback or fire action
-      this.sendAction('onClosed', final, this.get("paper"));
+      this.sendAction('onClosed', final, scope);
     }
   },
 
