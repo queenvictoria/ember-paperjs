@@ -1,7 +1,7 @@
 ember-paperjs
 ==============================================================================
 
-[Short description of the addon.]
+Ember components for using the excellent canvas SVG drawing library: [PaperJS](http://paperjs.org/). A work in progress. Contributions welcomed.
 
 Installation
 ------------------------------------------------------------------------------
@@ -14,7 +14,38 @@ ember install ember-paperjs
 Usage
 ------------------------------------------------------------------------------
 
-[Longer description of how to use the addon in apps.]
+### Initialise a blank Paper canvas
+
+```
+{{ paperjs-canvas }}
+```
+
+#### Events
+
+* `onInit=(action "onInitEvent")`
+
+
+### Create a Paper component that you can draw on
+
+```
+{{ paperjs-drawing }}
+```
+
+#### Options for `paperjs-drawing`
+
+* `closed=true|false` // automatically close shapes
+* `smoothed=true|false` // [smooth](http://paperjs.org/reference/path/#smooth) shapes when complete
+* `simplified=true|false` //  [simplify ](http://paperjs.org/reference/path/#simplify) shapes when complete (should accept a tolerances but doesn't)
+* `compoundPaths=true|false` // Create compound shapes (like Illustrator--not like PaperJS). Drawing inside another shape creates a boolean subtraction.
+* `minDistance=5` // minimum drawing distance for each part of a path
+* `maxDistance=100` // maximum drawing distance for each part of a path
+* `strokeColor="black"`
+* `fillColor="rgba(255, 255, 244, 0.4)"`
+
+#### Events
+
+* `onClosed=(action "onClosedEvent")`
+* `onInit=(action "onInitEvent")`
 
 
 Contributing

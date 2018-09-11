@@ -9,7 +9,7 @@
     "paper",
     "paper.js"
   ],
-  "repository": "",
+  "repository": "https://github.com/queenvictoria/ember-paperjs",
   "license": "MIT",
   "author": {
     "name": "Snow",
