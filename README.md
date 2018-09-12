@@ -22,7 +22,8 @@ Usage
 
 #### Events
 
-* `onInit=(action "onInitEvent")`
+* `onInit=(action "onBeforeEvent")` provides the `canvas` element
+* `onInit=(action "onInitEvent")` provides the `paper` scope object
 
 
 ### Create a Paper component that you can draw on
@@ -44,8 +45,9 @@ Usage
 
 #### Events
 
-* `onClosed=(action "onClosedEvent")`
-* `onInit=(action "onInitEvent")`
+* `onInit=(action "onBeforeEvent")` provides the `canvas` element
+* `onInit=(action "onInitEvent")` provides the `paper` scope object
+* `onClosed=(action "onClosedEvent")` provides the path and the scope
 
 
 Contributing

@@ -5,11 +5,14 @@ import layout from '../templates/components/paperjs-drawing';
 export default Component.extend({
   layout,
   tagName: "canvas",
+  attributeBindings: ["resize"],
+  resize: true,
 
   didInsertElement() {
     this._super(...arguments);
 
     const canvas = this.get("element");
+    this.sendAction("onBeforeInit", canvas);
     const scope = new paper.PaperScope();
 
     scope.setup(canvas);
@@ -54,6 +57,8 @@ export default Component.extend({
       if ( ! path ) return;
 
       let final = path.clone();
+      if ( ! final || ! final.length ) return;
+
       if ( this.get("strokeColor") ) {
         final.strokeColor = this.get("strokeColor");
       }
@@ -105,7 +110,7 @@ export default Component.extend({
               }
             }
             // If they're all within this path then we are inside this path.
-            if ( within ) {
+            if ( item && within ) {
               // If it is do a boolean subtract.
               let result = item.subtract(final, {});
               item.remove();
